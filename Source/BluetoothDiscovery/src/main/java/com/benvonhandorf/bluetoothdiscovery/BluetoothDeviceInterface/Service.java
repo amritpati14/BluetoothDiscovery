@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
 import com.benvonhandorf.bluetoothdiscovery.SensorTagDevice.IRSensor.IrConfigCharacteristic;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -37,6 +38,10 @@ public class Service implements UUIDHolder{
 
     protected Characteristic getCharacteristic(UUID config) {
         return _characteristicMap.get(config);
+    }
+
+    public Collection<Characteristic> getCharacteristics() {
+        return _characteristicMap.values();
     }
 
     @Override

@@ -8,17 +8,18 @@ import android.os.Bundle;
 import android.util.Log;
 import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.Characteristic;
 import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.Device;
+import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.ProbeDevice;
 import com.benvonhandorf.bluetoothdiscovery.SensorTagDevice.IRSensor.IrDataCharacteristic;
 import com.benvonhandorf.bluetoothdiscovery.SensorTagDevice.SensorTagDevice;
 
 /**
  * Created by benvh on 9/28/13.
  */
-public class SecondActivity extends Activity implements Device.OnDeviceStateChangedListener {
-    private static final String TAG = SecondActivity.class.getSimpleName();
+public class ProbeActivity extends Activity{
+    private static final String TAG = ProbeActivity.class.getSimpleName();
 
     private static final int REQUEST_ENABLE_BT = 55555;
-    private SensorTagDevice _sensorTagDevice;
+    private ProbeDevice _probeDevice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +48,9 @@ public class SecondActivity extends Activity implements Device.OnDeviceStateChan
 //                            .withDeviceReadyListener(this)
 //                            .build();
 
-            _sensorTagDevice = new SensorTagDevice(this, bluetoothAdapter);
+            _probeDevice = new ProbeDevice(this, bluetoothAdapter);
 
-            _sensorTagDevice.setDeviceReadyListener(this);
-
-            _sensorTagDevice.connect();
+            _probeDevice.connect();
         }
     }
 
@@ -59,32 +58,6 @@ public class SecondActivity extends Activity implements Device.OnDeviceStateChan
     protected void onPause() {
         super.onPause();
 
-        _sensorTagDevice.disconnect();
-    }
-
-    @Override
-    public void onDeviceReady(Device device) {
-        //Enable the IR Sensor
-        _sensorTagDevice.getIrService()
-                .getDataCharacteristic()
-                .setCharacteristicListener(new Characteristic.CharacteristicListener() {
-            @Override
-            public void onValueChanged(Characteristic characteristic) {
-                IrDataCharacteristic irDataCharacteristic = (IrDataCharacteristic) characteristic;
-
-                Log.v(TAG, String.format("IR Sensor Reading: %f %f"
-                        , irDataCharacteristic.getAmbientTemperature()
-                        , irDataCharacteristic.getTargetTemperature()));
-            }
-        });
-
-        _sensorTagDevice.getIrService().getConfigCharacteristic().enable();
-        _sensorTagDevice.getIrService().getDataCharacteristic().read();
-        _sensorTagDevice.getIrService().getDataCharacteristic().enableNotification();
-    }
-
-    @Override
-    public void onDeviceDisconnect(Device device) {
-
+        _probeDevice.disconnect();
     }
 }

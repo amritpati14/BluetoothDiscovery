@@ -4,6 +4,7 @@ import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.util.Log;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -53,6 +54,10 @@ public class Characteristic implements UUIDHolder {
 
     public Descriptor getDescriptor(UUID descriptorId) {
         return _descriptorMap.get(descriptorId);
+    }
+
+    public Collection<Descriptor> getDescriptors() {
+        return _descriptorMap.values();
     }
 
     protected void onValueChanged() {

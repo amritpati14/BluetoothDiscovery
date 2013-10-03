@@ -19,7 +19,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.benvonhandorf.bluetoothdiscovery.SecondActivity"
+            android:name="com.benvonhandorf.bluetoothdiscovery.HeartRateMonitorActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

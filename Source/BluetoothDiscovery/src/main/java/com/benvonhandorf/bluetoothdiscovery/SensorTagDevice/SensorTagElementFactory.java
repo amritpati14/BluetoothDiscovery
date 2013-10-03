@@ -25,14 +25,4 @@ public class SensorTagElementFactory extends ElementFactory {
         return super.createSpecificService(device, bluetoothGattService, elementFactory);
     }
 
-    @Override
-    public Characteristic createSpecificCharacteristic(Service service, BluetoothGattCharacteristic bluetoothGattCharacteristic, ElementFactory elementFactory) {
-       return super.createSpecificCharacteristic(service, bluetoothGattCharacteristic, elementFactory);
-    }
-
-    @Override
-    public Descriptor createSpecificDescriptor(Characteristic characteristic, BluetoothGattDescriptor bluetoothGattDescriptor, ElementFactory elementFactory) {
-        return super.createSpecificDescriptor(characteristic, bluetoothGattDescriptor, elementFactory);
-    }
-
 }

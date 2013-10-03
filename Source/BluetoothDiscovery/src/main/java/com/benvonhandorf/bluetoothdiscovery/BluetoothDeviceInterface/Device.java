@@ -4,6 +4,7 @@ import android.bluetooth.*;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Queue;
 import java.util.UUID;
@@ -15,8 +16,10 @@ import java.util.concurrent.ArrayBlockingQueue;
 public abstract class Device implements BluetoothGattCallbackImplementation.BluetoothGattEvents {
     private static final String TAG = Device.class.getSimpleName();
 
-    public interface DeviceReadyListener {
+    public interface OnDeviceStateChangedListener {
         void onDeviceReady(Device device);
+
+        void onDeviceDisconnect(Device device);
     }
 
     private final Context _context;
@@ -24,7 +27,7 @@ public abstract class Device implements BluetoothGattCallbackImplementation.Blue
     private final BluetoothGattCallbackImplementation _bluetoothGattCallback;
     private final HashMap<UUID, Service> _serviceMap;
     private final Queue<DeviceCommand> _commandQueue;
-    private DeviceReadyListener _deviceReadyListener;
+    private OnDeviceStateChangedListener _deviceStateChangedListener;
 
     private BluetoothGatt _bluetoothGatt;
     private ElementFactory _elementFactory;
@@ -61,6 +64,7 @@ public abstract class Device implements BluetoothGattCallbackImplementation.Blue
     private BluetoothAdapter.LeScanCallback _bluetoothLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(BluetoothDevice bluetoothDevice, int i, byte[] bytes) {
+            Log.v(TAG, String.format("Scan found device: %s at %s", bluetoothDevice.getName(), bluetoothDevice.getAddress()));
             if (isTargetDevice(bluetoothDevice, i, bytes)) {
                 Log.v(TAG, String.format("Found target device: %s at %s", bluetoothDevice.getName(), bluetoothDevice.getAddress()));
                 _bluetoothAdapter.stopLeScan(_bluetoothLeScanCallback);
@@ -76,12 +80,13 @@ public abstract class Device implements BluetoothGattCallbackImplementation.Blue
         _bluetoothAdapter.startLeScan(_bluetoothLeScanCallback);
     }
 
-    public Device setDeviceReadyListener(DeviceReadyListener deviceReadyListener) {
-        _deviceReadyListener = deviceReadyListener;
+    public Device setDeviceReadyListener(OnDeviceStateChangedListener onDeviceStateChangedListener) {
+        _deviceStateChangedListener = onDeviceStateChangedListener;
         return this;
     }
 
     public Device connect() {
+        Log.v(TAG, "Starting device scan");
         scanForDevice();
 
         return this;
@@ -177,20 +182,26 @@ public abstract class Device implements BluetoothGattCallbackImplementation.Blue
 
     @Override
     public void onConnected() {
+        Log.v(TAG, "Device connected.  Discovering services");
         _bluetoothGatt.discoverServices();
     }
 
     @Override
     public void onDisconnected() {
-
+        disconnect();
+        if(_deviceStateChangedListener != null) {
+            _deviceStateChangedListener.onDeviceDisconnect(this);
+        }
     }
 
     @Override
     public void onServicesDiscovered() {
+        Log.v(TAG, "Services discovered.  Building object graph");
         scanDeviceForServices();
 
-        if (_deviceReadyListener != null) {
-            _deviceReadyListener.onDeviceReady(this);
+        if (_deviceStateChangedListener != null) {
+            Log.v(TAG, "Notifying listener of device readiness");
+            _deviceStateChangedListener.onDeviceReady(this);
         }
     }
 
@@ -213,5 +224,34 @@ public abstract class Device implements BluetoothGattCallbackImplementation.Blue
     @Override
     public void onError(BluetoothEvents eventType, int status) {
 
+    }
+
+    protected Collection<Service> getServices() {
+        return _serviceMap.values();
+    }
+
+    public static class Builder<T extends Device> {
+        private Context _context;
+        private BluetoothAdapter _bluetoothAdapter;
+        private OnDeviceStateChangedListener _deviceStateChangedListener;
+
+        public Builder<T> withContext(Context context) {
+            _context = context ;
+            return this ;
+        }
+
+        public Builder<T> withBluetoothAdapter(BluetoothAdapter bluetoothAdapter) {
+            _bluetoothAdapter = bluetoothAdapter;
+            return this ;
+        }
+
+        public Builder<T> withDeviceStateChangedListener(OnDeviceStateChangedListener onDeviceStateChangedListener) {
+            _deviceStateChangedListener = onDeviceStateChangedListener;
+            return this;
+        }
+
+        public T build() {
+            return null ;
+        }
     }
 }

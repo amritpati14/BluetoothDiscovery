@@ -130,7 +130,7 @@ public class MainActivity extends Activity {
                     Log.v(TAG, String.format("Written Value: 0x%2x", data[0]));
                 }
 
-                if (status == 0) {
+                if (status == BluetoothGatt.GATT_SUCCESS) {
                     runStateMachine();
                 }
             }
@@ -159,7 +159,7 @@ public class MainActivity extends Activity {
                     Log.v(TAG, String.format("Got IR Sensor Data: %.1f %1f", ambient, target));
                 }
 
-                if (status == 0) {
+                if (status == BluetoothGatt.GATT_SUCCESS) {
                     runStateMachine();
                 }
             }
@@ -228,17 +228,6 @@ public class MainActivity extends Activity {
 
         BluetoothGattCharacteristic characteristic = service.getCharacteristic(Sensors.IR_SENSOR.CONFIG);
 
-        final int properties = characteristic.getProperties();
-
-        Log.v(TAG, String.format("wire stage 1: Characteristic properties: 0x%2x", properties));
-
-        try {
-            Thread.sleep(500);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-
         Log.v(TAG, "Enabling temperature sensor");
         characteristic.setValue(new byte[]{0x01});
 
@@ -264,7 +253,9 @@ public class MainActivity extends Activity {
         if ((properties & BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
             Log.v(TAG, "Attempting read on characteristic");
 
-            _bluetoothGatt.readCharacteristic(characteristic);
+            if(_bluetoothGatt.readCharacteristic(characteristic)){
+                Log.v(TAG, "Read characteristic failed");
+            }
         }
     }
 

@@ -1,0 +1,32 @@
+
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Device Probe
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Name: Polar H6 25D23717
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Address: 00:22:D0:25:D2:37
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Class: 7936 7936
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Service: 0000180a-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 00002a27-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 00002a26-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 00002a25-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 00002a24-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 00002a23-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 00002a29-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 00002a28-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Service: 00001800-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 00002a04-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 00002a01-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 00002a00-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 00002a03-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 00002a02-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Service: 6217ff4b-fb31-1140-ad5a-a45545d7ecf3
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 6217ff4d-91bb-91d0-7e2a-7cd3bda8a1f3
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Descriptor: 00002902-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 6217ff4c-c8ec-b1fb-1380-3ad986708e2d
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Service: 00001801-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 00002a05-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Descriptor: 00002902-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Service: 0000180f-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 00002a19-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Service: 0000180d-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 00002a37-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Descriptor: 00002902-0000-1000-8000-00805f9b34fb
+10-03 08:00:20.352    7209-7221/com.benvonhandorf.bluetoothdiscovery V/ProbeDevice﹕ Characteristic: 00002a38-0000-1000-8000-00805f9b34fb
