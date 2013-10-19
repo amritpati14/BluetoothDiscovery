@@ -30,6 +30,7 @@
 
         <activity android:name=".ui.IrSensorRawGattActivity"/>
         <activity android:name=".ui.IrSensorInterfaceActivity"/>
+        <activity android:name=".ui.FastPollIrSensorInterfaceActivity"/>
         <activity android:name=".ui.ProbeDeviceActivity"/>
         <activity android:name=".ui.HeartRateMonitorActivity"/>
     </application>

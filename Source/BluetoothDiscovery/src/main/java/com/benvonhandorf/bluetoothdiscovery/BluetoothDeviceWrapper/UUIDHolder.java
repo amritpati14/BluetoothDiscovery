@@ -1,4 +1,4 @@
-package com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface;
+package com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper;
 
 import java.util.UUID;
 

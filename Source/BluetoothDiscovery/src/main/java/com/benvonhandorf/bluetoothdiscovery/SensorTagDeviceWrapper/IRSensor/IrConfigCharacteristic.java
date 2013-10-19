@@ -1,7 +1,7 @@
-package com.benvonhandorf.bluetoothdiscovery.SensorTagDevice.IRSensor;
+package com.benvonhandorf.bluetoothdiscovery.SensorTagDeviceWrapper.IRSensor;
 
 import android.bluetooth.BluetoothGattCharacteristic;
-import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.*;
+import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper.*;
 
 /**
  * Created by benvh on 9/28/13.

@@ -1,10 +1,8 @@
-package com.benvonhandorf.bluetoothdiscovery.SensorTagDevice;
+package com.benvonhandorf.bluetoothdiscovery.SensorTagDeviceWrapper;
 
-import android.bluetooth.BluetoothGattCharacteristic;
-import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
-import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.*;
-import com.benvonhandorf.bluetoothdiscovery.SensorTagDevice.IRSensor.IrSensorService;
+import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper.*;
+import com.benvonhandorf.bluetoothdiscovery.SensorTagDeviceWrapper.IRSensor.IrSensorService;
 
 import java.util.UUID;
 

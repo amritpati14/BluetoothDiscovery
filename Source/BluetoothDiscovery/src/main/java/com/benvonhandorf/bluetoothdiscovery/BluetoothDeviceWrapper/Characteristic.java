@@ -1,8 +1,7 @@
-package com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface;
+package com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
-import android.util.Log;
 
 import java.util.Collection;
 import java.util.HashMap;

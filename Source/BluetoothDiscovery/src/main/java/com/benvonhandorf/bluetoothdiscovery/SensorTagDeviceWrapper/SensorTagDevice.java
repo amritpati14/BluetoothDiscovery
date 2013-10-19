@@ -1,10 +1,10 @@
-package com.benvonhandorf.bluetoothdiscovery.SensorTagDevice;
+package com.benvonhandorf.bluetoothdiscovery.SensorTagDeviceWrapper;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
-import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.Device;
-import com.benvonhandorf.bluetoothdiscovery.SensorTagDevice.IRSensor.IrSensorService;
+import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper.Device;
+import com.benvonhandorf.bluetoothdiscovery.SensorTagDeviceWrapper.IRSensor.IrSensorService;
 
 /**
  * Created by benvh on 9/28/13.

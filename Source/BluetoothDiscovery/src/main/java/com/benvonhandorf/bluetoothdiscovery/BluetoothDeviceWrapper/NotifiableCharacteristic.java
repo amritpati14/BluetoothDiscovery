@@ -1,4 +1,4 @@
-package com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface;
+package com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
@@ -12,13 +12,15 @@ public abstract class NotifiableCharacteristic extends Characteristic {
     }
 
     public void enableNotification() {
-        Descriptor descriptor = getDescriptor(Descriptor.DescriptorIds.CLIENT_CHARACTERISTIC_CONFIGURATION);
+        Descriptor descriptor =
+                getDescriptor(Descriptor.DescriptorIds.CLIENT_CHARACTERISTIC_CONFIGURATION);
 
         if(descriptor != null) {
             descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
         }
 
-        SetCharacteristicNotificationCommand setCharacteristicNotificationCommand = new SetCharacteristicNotificationCommand(this);
+        SetCharacteristicNotificationCommand setCharacteristicNotificationCommand
+                = new SetCharacteristicNotificationCommand(this);
 
         getParent().getDevice().executeCommand(setCharacteristicNotificationCommand);
     }

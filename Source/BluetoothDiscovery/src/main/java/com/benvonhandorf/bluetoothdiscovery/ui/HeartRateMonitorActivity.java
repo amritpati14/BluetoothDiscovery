@@ -10,11 +10,11 @@ import android.util.Log;
 import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.Views;
-import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.Characteristic;
-import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.Device;
-import com.benvonhandorf.bluetoothdiscovery.HeartRateMonitor.HRMSensor.BodySensorLocationCharacteristic;
-import com.benvonhandorf.bluetoothdiscovery.HeartRateMonitor.HRMSensor.HeartRateCharacteristic;
-import com.benvonhandorf.bluetoothdiscovery.HeartRateMonitor.PolarH6HRMDevice;
+import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper.Characteristic;
+import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper.Device;
+import com.benvonhandorf.bluetoothdiscovery.HeartRateMonitorWrapper.HRMSensor.BodySensorLocationCharacteristic;
+import com.benvonhandorf.bluetoothdiscovery.HeartRateMonitorWrapper.HRMSensor.HeartRateCharacteristic;
+import com.benvonhandorf.bluetoothdiscovery.HeartRateMonitorWrapper.PolarH6HRMDevice;
 import com.benvonhandorf.bluetoothdiscovery.R;
 
 /**

@@ -17,10 +17,10 @@ import com.benvonhandorf.bluetoothdiscovery.SensorTagDeviceWrapper.IRSensor.IrDa
 import com.benvonhandorf.bluetoothdiscovery.SensorTagDeviceWrapper.SensorTagDevice;
 
 /**
- * Created by benvh on 9/28/13.
+ * Created by benvh on 10/19/13.
  */
-public class IrSensorInterfaceActivity extends Activity implements Device.OnDeviceStateChangedListener {
-    private static final String TAG = IrSensorInterfaceActivity.class.getSimpleName();
+public class FastPollIrSensorInterfaceActivity extends Activity implements Device.OnDeviceStateChangedListener {
+    private static final String TAG = FastPollIrSensorInterfaceActivity.class.getSimpleName();
 
     private static final int REQUEST_ENABLE_BT = 55555;
     private SensorTagDevice _sensorTagDevice;
@@ -55,12 +55,6 @@ public class IrSensorInterfaceActivity extends Activity implements Device.OnDevi
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
-//            _sensorTagDevice = new Device.Builder<SensorTagDevice>()
-//                            .withContext(this)
-//                            .withBluetoothAdapter(bluetoothAdapter)
-//                            .withDeviceReadyListener(this)
-//                            .build();
-
             _sensorTagDevice = new SensorTagDevice(this, bluetoothAdapter);
 
             _sensorTagDevice.setDeviceReadyListener(this);
@@ -85,14 +79,14 @@ public class IrSensorInterfaceActivity extends Activity implements Device.OnDevi
                     @Override
                     public void onValueChanged(Characteristic characteristic) {
                         final IrDataCharacteristic irDataCharacteristic = (IrDataCharacteristic) characteristic;
-
+                        //Read again as soon as we've completed the previous read
+                        irDataCharacteristic.read();
                         displayTemperatureData(irDataCharacteristic);
                     }
                 });
 
         _sensorTagDevice.getIrService().getConfigCharacteristic().enable();
         _sensorTagDevice.getIrService().getDataCharacteristic().read();
-        _sensorTagDevice.getIrService().getDataCharacteristic().enableNotification();
     }
 
     private void displayTemperatureData(final IrDataCharacteristic irDataCharacteristic) {

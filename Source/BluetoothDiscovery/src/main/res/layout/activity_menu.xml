@@ -22,6 +22,13 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="IR Temp - Fast Poll Example"
+        android:id="@+id/button_ir_fast_poll"
+        android:layout_gravity="center"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Probe Device - Interface"
         android:id="@+id/button_ir_probe"
         android:layout_gravity="center"/>

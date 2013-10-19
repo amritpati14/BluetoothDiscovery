@@ -1,10 +1,9 @@
-package com.benvonhandorf.bluetoothdiscovery.SensorTagDevice.IRSensor;
+package com.benvonhandorf.bluetoothdiscovery.SensorTagDeviceWrapper.IRSensor;
 
 import android.bluetooth.BluetoothGattCharacteristic;
-import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.Characteristic;
-import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.ElementFactory;
-import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.NotifiableCharacteristic;
-import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.Service;
+import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper.ElementFactory;
+import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper.NotifiableCharacteristic;
+import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper.Service;
 
 import static java.lang.Math.pow;
 

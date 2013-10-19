@@ -1,4 +1,4 @@
-package com.benvonhandorf.bluetoothdiscovery.HeartRateMonitor;
+package com.benvonhandorf.bluetoothdiscovery.SensorTagDeviceWrapper;
 
 import java.util.UUID;
 
@@ -11,11 +11,10 @@ public class Sensors {
         public static final UUID USER_DESCRIPTION = UUID.fromString("00002901-0000-1000-8000-00805f9b34fb");
     }
 
-    public static class HEART_RATE {
-        public static final UUID SERVICE = UUID.fromString("0000180d-0000-1000-8000-00805f9b34fb");
-        public static final UUID DATA = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb");
+    public static class IR_SENSOR {
+        public static final UUID SERVICE = UUID.fromString("f000aa00-0451-4000-b000-000000000000");
+        public static final UUID DATA = UUID.fromString("f000aa01-0451-4000-b000-000000000000");
         public static final UUID CONFIG = UUID.fromString("f000aa02-0451-4000-b000-000000000000");
-        public static final UUID BODY_SENSOR_LOCATION = UUID.fromString("00002a38-0000-1000-8000-00805f9b34fb");
     }
 
     public static class HUMIDITY {

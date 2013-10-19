@@ -1,9 +1,9 @@
-package com.benvonhandorf.bluetoothdiscovery.HeartRateMonitor.HRMSensor;
+package com.benvonhandorf.bluetoothdiscovery.HeartRateMonitorWrapper.HRMSensor;
 
 import android.bluetooth.BluetoothGattCharacteristic;
-import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.ElementFactory;
-import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.NotifiableCharacteristic;
-import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.Service;
+import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper.ElementFactory;
+import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper.NotifiableCharacteristic;
+import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper.Service;
 
 /**
  * Created by benvh on 10/3/13.

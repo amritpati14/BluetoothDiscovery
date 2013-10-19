@@ -1,10 +1,10 @@
-package com.benvonhandorf.bluetoothdiscovery.HeartRateMonitor;
+package com.benvonhandorf.bluetoothdiscovery.HeartRateMonitorWrapper;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
-import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.Device;
-import com.benvonhandorf.bluetoothdiscovery.HeartRateMonitor.HRMSensor.HRMService;
+import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper.Device;
+import com.benvonhandorf.bluetoothdiscovery.HeartRateMonitorWrapper.HRMSensor.HRMService;
 
 /**
  * Created by benvh on 10/3/13.

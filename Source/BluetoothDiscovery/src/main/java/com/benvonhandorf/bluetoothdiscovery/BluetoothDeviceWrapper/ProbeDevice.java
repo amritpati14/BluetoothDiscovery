@@ -1,4 +1,4 @@
-package com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface;
+package com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothClass;

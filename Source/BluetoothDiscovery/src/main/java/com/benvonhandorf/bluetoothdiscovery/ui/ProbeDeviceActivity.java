@@ -6,12 +6,11 @@ import android.bluetooth.BluetoothManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.Views;
-import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.*;
+import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper.*;
 import com.benvonhandorf.bluetoothdiscovery.R;
 
 import java.util.ArrayList;

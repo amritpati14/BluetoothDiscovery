@@ -32,6 +32,12 @@ public class MenuActivity extends Activity {
         startActivity(intent);
     }
 
+    @OnClick(R.id.button_ir_fast_poll)
+    public void irFastPollActivity(){
+        Intent intent = new Intent(this, FastPollIrSensorInterfaceActivity.class);
+        startActivity(intent);
+    }
+
     @OnClick(R.id.button_ir_probe)
     public void probeActivity() {
         Intent intent = new Intent(this, ProbeDeviceActivity.class);

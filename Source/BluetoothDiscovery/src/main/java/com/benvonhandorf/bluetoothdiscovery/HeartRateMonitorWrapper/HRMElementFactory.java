@@ -1,11 +1,10 @@
-package com.benvonhandorf.bluetoothdiscovery.HeartRateMonitor;
+package com.benvonhandorf.bluetoothdiscovery.HeartRateMonitorWrapper;
 
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattDescriptor;
 import android.bluetooth.BluetoothGattService;
-import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.*;
-import com.benvonhandorf.bluetoothdiscovery.HeartRateMonitor.HRMSensor.HRMService;
-import com.benvonhandorf.bluetoothdiscovery.SensorTagDevice.IRSensor.IrSensorService;
+import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper.*;
+import com.benvonhandorf.bluetoothdiscovery.HeartRateMonitorWrapper.HRMSensor.HRMService;
 
 import java.util.UUID;
 

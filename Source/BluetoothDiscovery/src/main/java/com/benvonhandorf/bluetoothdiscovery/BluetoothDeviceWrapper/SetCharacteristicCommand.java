@@ -1,4 +1,4 @@
-package com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface;
+package com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceWrapper;
 
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothGattCharacteristic;
@@ -9,20 +9,28 @@ import java.util.UUID;
 /**
  * Created by benvh on 9/28/13.
  */
-public class ReadCharacteristicCommand extends DeviceCommand {
+public class SetCharacteristicCommand extends DeviceCommand {
     private static final String TAG = SetCharacteristicCommand.class.getSimpleName();
-
     private final Characteristic _characteristic;
+    private byte[] _value;
 
-    public ReadCharacteristicCommand(Characteristic characteristic) {
+    public SetCharacteristicCommand(Characteristic characteristic) {
         _characteristic = characteristic;
+    }
+
+    public SetCharacteristicCommand setValue(byte[] value) {
+        _value = value;
+
+        return this;
     }
 
     @Override
     public void execute(BluetoothGatt bluetoothGatt) {
         BluetoothGattCharacteristic bluetoothGattCharacteristic = _characteristic.getBluetoothCharacteristic();
 
-        if (bluetoothGatt.readCharacteristic(bluetoothGattCharacteristic)) {
+        bluetoothGattCharacteristic.setValue(_value);
+
+        if (bluetoothGatt.writeCharacteristic(bluetoothGattCharacteristic)) {
             setIsExecuting(true);
         } else {
             Log.v(TAG, "Error calling writeCharacteristic");
@@ -32,7 +40,7 @@ public class ReadCharacteristicCommand extends DeviceCommand {
 
     @Override
     public boolean isCommandCompleted(Device.BluetoothEvents bluetoothEvent, UUID itemUUID) {
-        if (bluetoothEvent == Device.BluetoothEvents.onCharacteristicRead
+        if (bluetoothEvent == Device.BluetoothEvents.onCharacteristicWrite
                 && _characteristic.getUUID().equals(itemUUID)) {
             setIsExecuting(false);
 

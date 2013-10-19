@@ -10,7 +10,7 @@ import android.view.Menu;
 import butterknife.InjectView;
 import butterknife.Views;
 import com.benvonhandorf.bluetoothdiscovery.R;
-import com.benvonhandorf.bluetoothdiscovery.SensorTagDevice.Sensors;
+import com.benvonhandorf.bluetoothdiscovery.SensorTagDeviceWrapper.Sensors;
 
 import static java.lang.Math.*;
 
