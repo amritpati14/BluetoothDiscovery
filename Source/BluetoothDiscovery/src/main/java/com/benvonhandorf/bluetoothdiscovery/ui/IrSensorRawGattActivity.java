@@ -1,45 +1,45 @@
-package com.benvonhandorf.bluetoothdiscovery;
+package com.benvonhandorf.bluetoothdiscovery.ui;
 
 import android.bluetooth.*;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
+import butterknife.InjectView;
+import butterknife.Views;
+import com.benvonhandorf.bluetoothdiscovery.R;
 import com.benvonhandorf.bluetoothdiscovery.SensorTagDevice.Sensors;
 
 import static java.lang.Math.*;
 
 import java.io.UnsupportedEncodingException;
 
-public class MainActivity extends Activity {
+public class IrSensorRawGattActivity extends Activity {
 
     private static final int REQUEST_ENABLE_BT = 55555;
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = IrSensorRawGattActivity.class.getSimpleName();
     private BluetoothAdapter _bluetoothAdapter;
     private BluetoothAdapter.LeScanCallback _leScanCallback;
     private BluetoothGattCallback _gattCallback;
 
-    private static final int STATE_DISCONNECTED = 0;
-    private static final int STATE_CONNECTING = 1;
-    private static final int STATE_CONNECTED = 2;
-
-    public final static String ACTION_GATT_CONNECTED =
-            "com.example.bluetooth.le.ACTION_GATT_CONNECTED";
-    public final static String ACTION_GATT_DISCONNECTED =
-            "com.example.bluetooth.le.ACTION_GATT_DISCONNECTED";
-    public final static String ACTION_GATT_SERVICES_DISCOVERED =
-            "com.example.bluetooth.le.ACTION_GATT_SERVICES_DISCOVERED";
-    public final static String ACTION_DATA_AVAILABLE =
-            "com.example.bluetooth.le.ACTION_DATA_AVAILABLE";
-    public final static String EXTRA_DATA =
-            "com.example.bluetooth.le.EXTRA_DATA";
     private BluetoothGatt _bluetoothGatt;
+
+    @InjectView(R.id.text_value)
+    android.widget.TextView _reading;
+
+    private Handler _uiThreadHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
+        _uiThreadHandler = new Handler();
+
+        setContentView(R.layout.activity_simple_data);
+
+        Views.inject(this);
 
         _gattCallback = new BluetoothGattCallback() {
             @Override
@@ -49,6 +49,10 @@ public class MainActivity extends Activity {
                     _state = State.Connecting;
                     Log.v(TAG, "Connected");
                     Log.v(TAG, "Discovering services: " + gatt.discoverServices());
+                    setReading("Connected");
+                } else if (newState == BluetoothProfile.STATE_DISCONNECTING) {
+                    Log.v(TAG, "Disconnected");
+                    setReading("Disconnected");
                 }
             }
 
@@ -65,10 +69,6 @@ public class MainActivity extends Activity {
 
                         for (BluetoothGattDescriptor descriptor : characteristic.getDescriptors()) {
                             Log.v(TAG, "          Descriptor:" + descriptor.getUuid());
-//
-//                            if (Sensors.Descriptors.USER_DESCRIPTION.equals(descriptor.getUuid())) {
-//                                _bluetoothGatt.readDescriptor(descriptor);
-//                            }
                         }
                     }
                 }
@@ -76,30 +76,6 @@ public class MainActivity extends Activity {
                 _state = State.Connected;
 
                 runStateMachine();
-
-
-//                service = gatt.getService(Sensors.HUMIDITY.SERVICE);
-//
-//                if (service != null) {
-//                    BluetoothGattCharacteristic characteristic = service.getCharacteristic(Sensors.HUMIDITY.CONFIG);
-//
-//                    Log.v(TAG, "Enabling humidity sensor");
-//                    characteristic.setValue(new byte[]{0x01});
-//                    if(!_bluetoothGatt.writeCharacteristic(characteristic)) {
-//                        Log.v(TAG, "Failed writeCharacteristic");
-//                    }
-//
-//                    characteristic = service.getCharacteristic(Sensors.HUMIDITY.DATA);
-//
-//                    Log.v(TAG, "Enabling humidity sensor notification");
-//                    gatt.setCharacteristicNotification(characteristic, true);
-//
-////                        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(Sensors.Descriptors.CLIENT_CHARACTERISTIC_CONFIGURATION);
-////                        descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-////                        if(!_bluetoothGatt.writeDescriptor(descriptor)) {
-////                            Log.v(TAG, "Failed writeDescriptor");
-////                        }
-//                }
             }
 
             @Override
@@ -153,10 +129,16 @@ public class MainActivity extends Activity {
                 Log.v(TAG, "Characteristic Read: " + characteristic.getInstanceId() + " : " + characteristic.getUuid() + " Length: " + characteristic.getValue().length);
 
                 if (Sensors.IR_SENSOR.DATA.equals(characteristic.getUuid())) {
-                    double ambient = extractAmbientTemperature(characteristic);
-                    double target = extractTargetTemperature(characteristic, ambient);
+                    final double ambient = extractAmbientTemperature(characteristic);
+                    final double target = extractTargetTemperature(characteristic, ambient);
 
-                    Log.v(TAG, String.format("Got IR Sensor Data: %.1f %1f", ambient, target));
+                    String reading = String.format("Ambient: %f\nTarget: %f",
+                            ambient,
+                            target);
+
+                    Log.v(TAG, String.format("Got IR Sensor Data: %s", reading));
+
+                    setReading(reading);
                 }
 
                 if (status == BluetoothGatt.GATT_SUCCESS) {
@@ -171,10 +153,16 @@ public class MainActivity extends Activity {
                 Log.v(TAG, "Characteristic Changed: " + characteristic.getInstanceId() + " : " + characteristic.getUuid() + " Length: " + characteristic.getValue().length);
 
                 if (Sensors.IR_SENSOR.DATA.equals(characteristic.getUuid())) {
-                    double ambient = extractAmbientTemperature(characteristic);
-                    double target = extractTargetTemperature(characteristic, ambient);
+                    final double ambient = extractAmbientTemperature(characteristic);
+                    final double target = extractTargetTemperature(characteristic, ambient);
 
-                    Log.v(TAG, String.format("Got IR Sensor Data: %.1f %1f", ambient, target));
+                    String reading = String.format("Ambient: %f\nTarget: %f",
+                            ambient,
+                            target);
+
+                    Log.v(TAG, String.format("Got IR Sensor Data: %s", reading));
+
+                    setReading(reading);
                 }
 
                 runStateMachine();
@@ -191,22 +179,21 @@ public class MainActivity extends Activity {
                     Log.v(TAG, "Attempting to connect: " + bluetoothDevice.getName());
                     _bluetoothAdapter.stopLeScan(_leScanCallback);
 
-                    _bluetoothGatt = bluetoothDevice.connectGatt(MainActivity.this, false, _gattCallback);
+                    _bluetoothGatt = bluetoothDevice.connectGatt(IrSensorRawGattActivity.this, false, _gattCallback);
                 }
             }
         };
     }
 
-
     private enum State {
         None, Connecting, Connected, Enabling, Configuring, Configured, Notifying;
+
+
     }
 
     private State _state = State.None;
 
     private void runStateMachine() {
-        Log.v(TAG, "runStateMachine");
-
         switch (_state) {
             case Connected:
                 wireIrSensor1();
@@ -253,7 +240,7 @@ public class MainActivity extends Activity {
         if ((properties & BluetoothGattCharacteristic.PROPERTY_READ) > 0) {
             Log.v(TAG, "Attempting read on characteristic");
 
-            if(_bluetoothGatt.readCharacteristic(characteristic)){
+            if (_bluetoothGatt.readCharacteristic(characteristic)) {
                 Log.v(TAG, "Read characteristic failed");
             }
         }
@@ -275,7 +262,6 @@ public class MainActivity extends Activity {
         }
     }
 
-
     private void wireIrSensor4() {
         BluetoothGattService service = _bluetoothGatt.getService(Sensors.IR_SENSOR.SERVICE);
 
@@ -288,13 +274,8 @@ public class MainActivity extends Activity {
         _state = State.Notifying;
 
         _bluetoothGatt.setCharacteristicNotification(characteristic, true);
-//
-//        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(Sensors.Descriptors.CLIENT_CHARACTERISTIC_CONFIGURATION);
-//        descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-//        if (!_bluetoothGatt.writeDescriptor(descriptor)) {
-//            Log.v(TAG, "Failed writeDescriptor");
-//        }
     }
+
 
     private double extractAmbientTemperature(BluetoothGattCharacteristic c) {
         int offset = 2;
@@ -391,5 +372,14 @@ public class MainActivity extends Activity {
         }
 
         Log.v(TAG, "Done spinning down bluetooth connections");
+    }
+
+    private void setReading(final String reading) {
+        _uiThreadHandler.post(new Runnable() {
+            @Override
+            public void run() {
+                _reading.setText(reading);
+            }
+        });
     }
 }

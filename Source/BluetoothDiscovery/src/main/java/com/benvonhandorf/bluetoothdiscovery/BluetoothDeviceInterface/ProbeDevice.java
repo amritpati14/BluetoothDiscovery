@@ -17,6 +17,8 @@ public class ProbeDevice extends Device  implements Device.OnDeviceStateChangedL
 
     public ProbeDevice(Context context, BluetoothAdapter bluetoothAdapter) {
         super(context, bluetoothAdapter);
+        //By default, our implementation of the device ready listener dumps the
+        //data to the log.  The owner is free to override this
         setDeviceReadyListener(this);
     }
 

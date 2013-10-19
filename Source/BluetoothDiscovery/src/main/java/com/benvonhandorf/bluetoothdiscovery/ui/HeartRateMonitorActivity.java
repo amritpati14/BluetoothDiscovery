@@ -1,4 +1,4 @@
-package com.benvonhandorf.bluetoothdiscovery;
+package com.benvonhandorf.bluetoothdiscovery.ui;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
@@ -15,8 +15,7 @@ import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.Device;
 import com.benvonhandorf.bluetoothdiscovery.HeartRateMonitor.HRMSensor.BodySensorLocationCharacteristic;
 import com.benvonhandorf.bluetoothdiscovery.HeartRateMonitor.HRMSensor.HeartRateCharacteristic;
 import com.benvonhandorf.bluetoothdiscovery.HeartRateMonitor.PolarH6HRMDevice;
-import com.benvonhandorf.bluetoothdiscovery.SensorTagDevice.IRSensor.IrDataCharacteristic;
-import com.benvonhandorf.bluetoothdiscovery.SensorTagDevice.SensorTagDevice;
+import com.benvonhandorf.bluetoothdiscovery.R;
 
 /**
  * Created by benvh on 9/28/13.
@@ -36,7 +35,7 @@ public class HeartRateMonitorActivity extends Activity implements Device.OnDevic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_simple_data);
 
         Views.inject(this);
 
@@ -47,9 +46,11 @@ public class HeartRateMonitorActivity extends Activity implements Device.OnDevic
     protected void onResume() {
         super.onResume();
 
-        _inFocus = true ;
+        _inFocus = true;
 
-        final BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
+        _textValue.setText(String.format("Disconnected"));
+
+        BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
 
         BluetoothAdapter bluetoothAdapter = bluetoothManager.getAdapter();
 
@@ -71,7 +72,7 @@ public class HeartRateMonitorActivity extends Activity implements Device.OnDevic
     protected void onPause() {
         super.onPause();
 
-        _inFocus = false ;
+        _inFocus = false;
 
         _device.disconnect();
     }
@@ -79,6 +80,13 @@ public class HeartRateMonitorActivity extends Activity implements Device.OnDevic
     @Override
     public void onDeviceReady(Device device) {
         Log.v(TAG, "Device ready");
+
+        _handler.post(new Runnable() {
+            @Override
+            public void run() {
+                _textValue.setText(String.format("Connected"));
+            }
+        });
 
         //Enable the IR Sensor
         _device.getHRMService()
@@ -100,10 +108,13 @@ public class HeartRateMonitorActivity extends Activity implements Device.OnDevic
                             }
                         });
                     }
-                });
+                }
+
+                );
 
         _device.getHRMService()
                 .getBodySensorLocationCharacteristic()
+
                 .setCharacteristicListener(new Characteristic.CharacteristicListener() {
                     @Override
                     public void onValueChanged(Characteristic characteristic) {
@@ -112,14 +123,27 @@ public class HeartRateMonitorActivity extends Activity implements Device.OnDevic
                         Log.v(TAG, String.format("Body Location Changed: %d"
                                 , bodySensorLocationCharacteristic.getLocation()));
                     }
-                });
+                }
 
-        _device.getHRMService().getBodySensorLocationCharacteristic().read();
-        _device.getHRMService().getHeartRateCharacteristic().enableNotification();
+                );
+
+        _device.getHRMService().getBodySensorLocationCharacteristic()
+                .read();
+
+        _device.getHRMService().
+                getHeartRateCharacteristic()
+                .enableNotification();
     }
 
     @Override
     public void onDeviceDisconnect(Device device) {
+        _handler.post(new Runnable() {
+            @Override
+            public void run() {
+                _textValue.setText(String.format("Disconnected"));
+            }
+        });
+
         Log.v(TAG, "Device disconnected");
         if (_inFocus) {
             //Attempt to reconnect

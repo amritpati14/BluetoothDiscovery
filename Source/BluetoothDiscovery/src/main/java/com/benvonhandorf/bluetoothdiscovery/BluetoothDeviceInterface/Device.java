@@ -30,8 +30,10 @@ public abstract class Device implements BluetoothGattCallbackImplementation.Blue
     private OnDeviceStateChangedListener _deviceStateChangedListener;
 
     private BluetoothGatt _bluetoothGatt;
-    private ElementFactory _elementFactory;
 
+    private BluetoothDevice _bluetoothDevice;
+
+    private ElementFactory _elementFactory;
     public enum BluetoothEvents {
         onConnectionStateChange,
         onServicesDiscovered,
@@ -40,6 +42,7 @@ public abstract class Device implements BluetoothGattCallbackImplementation.Blue
         onCharacteristicRead,
         onCharacteristicWrite,
         onCharacteristicChanged,
+
     }
 
     public Device(Context context, BluetoothAdapter bluetoothAdapter) {
@@ -60,7 +63,6 @@ public abstract class Device implements BluetoothGattCallbackImplementation.Blue
     }
 
     protected abstract boolean isTargetDevice(BluetoothDevice bluetoothDevice, int i, byte[] bytes);
-
     private BluetoothAdapter.LeScanCallback _bluetoothLeScanCallback = new BluetoothAdapter.LeScanCallback() {
         @Override
         public void onLeScan(BluetoothDevice bluetoothDevice, int i, byte[] bytes) {
@@ -69,6 +71,7 @@ public abstract class Device implements BluetoothGattCallbackImplementation.Blue
                 Log.v(TAG, String.format("Found target device: %s at %s", bluetoothDevice.getName(), bluetoothDevice.getAddress()));
                 _bluetoothAdapter.stopLeScan(_bluetoothLeScanCallback);
                 _bluetoothGatt = bluetoothDevice.connectGatt(_context, false, _bluetoothGattCallback);
+                _bluetoothDevice = bluetoothDevice;
             } else {
                 Log.v(TAG, String.format("Ignoring device: %s at %s", bluetoothDevice.getName(), bluetoothDevice.getAddress()));
             }
@@ -180,6 +183,10 @@ public abstract class Device implements BluetoothGattCallbackImplementation.Blue
         return result;
     }
 
+    public BluetoothDevice getBluetoothDevice() {
+        return _bluetoothDevice;
+    }
+
     @Override
     public void onConnected() {
         Log.v(TAG, "Device connected.  Discovering services");
@@ -226,7 +233,7 @@ public abstract class Device implements BluetoothGattCallbackImplementation.Blue
 
     }
 
-    protected Collection<Service> getServices() {
+    public Collection<Service> getServices() {
         return _serviceMap.values();
     }
 

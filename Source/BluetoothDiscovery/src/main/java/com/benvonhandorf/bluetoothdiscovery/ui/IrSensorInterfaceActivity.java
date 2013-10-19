@@ -1,30 +1,44 @@
-package com.benvonhandorf.bluetoothdiscovery;
+package com.benvonhandorf.bluetoothdiscovery.ui;
 
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.widget.TextView;
+import butterknife.InjectView;
+import butterknife.Views;
 import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.Characteristic;
 import com.benvonhandorf.bluetoothdiscovery.BluetoothDeviceInterface.Device;
+import com.benvonhandorf.bluetoothdiscovery.R;
 import com.benvonhandorf.bluetoothdiscovery.SensorTagDevice.IRSensor.IrDataCharacteristic;
 import com.benvonhandorf.bluetoothdiscovery.SensorTagDevice.SensorTagDevice;
 
 /**
  * Created by benvh on 9/28/13.
  */
-public class SecondActivity extends Activity implements Device.OnDeviceStateChangedListener {
-    private static final String TAG = SecondActivity.class.getSimpleName();
+public class IrSensorInterfaceActivity extends Activity implements Device.OnDeviceStateChangedListener {
+    private static final String TAG = IrSensorInterfaceActivity.class.getSimpleName();
 
     private static final int REQUEST_ENABLE_BT = 55555;
     private SensorTagDevice _sensorTagDevice;
+
+    @InjectView(R.id.text_value)
+    TextView _reading;
+
+    Handler _uiThreadHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+        _uiThreadHandler = new Handler();
+
+        setContentView(R.layout.activity_simple_data);
+
+        Views.inject(this);
     }
 
     @Override
@@ -68,23 +82,36 @@ public class SecondActivity extends Activity implements Device.OnDeviceStateChan
         _sensorTagDevice.getIrService()
                 .getDataCharacteristic()
                 .setCharacteristicListener(new Characteristic.CharacteristicListener() {
-            @Override
-            public void onValueChanged(Characteristic characteristic) {
-                IrDataCharacteristic irDataCharacteristic = (IrDataCharacteristic) characteristic;
+                    @Override
+                    public void onValueChanged(Characteristic characteristic) {
+                        final IrDataCharacteristic irDataCharacteristic = (IrDataCharacteristic) characteristic;
 
-                Log.v(TAG, String.format("IR Sensor Reading: %f %f"
-                        , irDataCharacteristic.getAmbientTemperature()
-                        , irDataCharacteristic.getTargetTemperature()));
-            }
-        });
+                        _uiThreadHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                displayTemperatureData(irDataCharacteristic);
+                            }
+                        });
+                    }
+                });
 
         _sensorTagDevice.getIrService().getConfigCharacteristic().enable();
         _sensorTagDevice.getIrService().getDataCharacteristic().read();
         _sensorTagDevice.getIrService().getDataCharacteristic().enableNotification();
     }
 
+    private void displayTemperatureData(IrDataCharacteristic irDataCharacteristic) {
+        Log.v(TAG, String.format("IR Sensor Reading: %f %f"
+                , irDataCharacteristic.getAmbientTemperature()
+                , irDataCharacteristic.getTargetTemperature()));
+
+        _reading.setText(String.format("Ambient: %f\nTarget: %f",
+                irDataCharacteristic.getAmbientTemperature(),
+                irDataCharacteristic.getTargetTemperature()));
+    }
+
     @Override
     public void onDeviceDisconnect(Device device) {
-
+        _reading.setText("Disconnected");
     }
 }

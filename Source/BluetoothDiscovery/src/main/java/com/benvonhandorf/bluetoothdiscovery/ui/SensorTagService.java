@@ -1,4 +1,4 @@
-package com.benvonhandorf.bluetoothdiscovery;
+package com.benvonhandorf.bluetoothdiscovery.ui;
 
 import android.app.Service;
 import android.content.Intent;
