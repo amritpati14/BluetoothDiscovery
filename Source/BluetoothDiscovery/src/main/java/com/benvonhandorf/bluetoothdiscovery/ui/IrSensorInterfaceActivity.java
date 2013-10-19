@@ -99,11 +99,11 @@ public class IrSensorInterfaceActivity extends Activity implements Device.OnDevi
         _uiThreadHandler.post(new Runnable() {
             @Override
             public void run() {
-                Log.v(TAG, String.format("IR Sensor Reading: %f %f"
+                Log.v(TAG, String.format("IR Sensor Reading: %.1f %.1f"
                         , irDataCharacteristic.getAmbientTemperature()
                         , irDataCharacteristic.getTargetTemperature()));
 
-                _reading.setText(String.format("Ambient: %f\nTarget: %f",
+                _reading.setText(String.format("Ambient: %.1f\nTarget: %.1f",
                         irDataCharacteristic.getAmbientTemperature(),
                         irDataCharacteristic.getTargetTemperature()));
             }

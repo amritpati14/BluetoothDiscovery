@@ -27,19 +27,20 @@ public class HeartRateMonitorActivity extends Activity implements Device.OnDevic
     private PolarH6HRMDevice _device;
 
     @InjectView(R.id.text_value)
-    TextView _textValue;
+    TextView _reading;
     private boolean _inFocus = false;
-    private Handler _handler;
+    private Handler _uiThreadHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        _uiThreadHandler = new Handler();
+
         setContentView(R.layout.activity_simple_data);
 
         Views.inject(this);
 
-        _handler = new Handler();
     }
 
     @Override
@@ -48,7 +49,7 @@ public class HeartRateMonitorActivity extends Activity implements Device.OnDevic
 
         _inFocus = true;
 
-        _textValue.setText(String.format("Disconnected"));
+        _reading.setText(String.format("Disconnected"));
 
         BluetoothManager bluetoothManager = (BluetoothManager) getSystemService(BLUETOOTH_SERVICE);
 
@@ -81,10 +82,10 @@ public class HeartRateMonitorActivity extends Activity implements Device.OnDevic
     public void onDeviceReady(Device device) {
         Log.v(TAG, "Device ready");
 
-        _handler.post(new Runnable() {
+        _uiThreadHandler.post(new Runnable() {
             @Override
             public void run() {
-                _textValue.setText(String.format("Connected"));
+                _reading.setText(String.format("Connected"));
             }
         });
 
@@ -96,17 +97,11 @@ public class HeartRateMonitorActivity extends Activity implements Device.OnDevic
                     public void onValueChanged(Characteristic characteristic) {
                         HeartRateCharacteristic heartRateCharacteristic = (HeartRateCharacteristic) characteristic;
 
-                        final int bpmReading = heartRateCharacteristic.getBPM();
+                        int bpmReading = heartRateCharacteristic.getBPM();
 
-                        Log.v(TAG, String.format("Heart Rate Reading: %d bpm"
-                                , bpmReading));
+                        String reading = String.format("%d bpm", bpmReading);
 
-                        _handler.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                _textValue.setText(String.format("%d bpm", bpmReading));
-                            }
-                        });
+                        setReading(reading);
                     }
                 }
 
@@ -135,14 +130,21 @@ public class HeartRateMonitorActivity extends Activity implements Device.OnDevic
                 .enableNotification();
     }
 
-    @Override
-    public void onDeviceDisconnect(Device device) {
-        _handler.post(new Runnable() {
+    private void setReading(final String reading) {
+        _uiThreadHandler.post(new Runnable() {
             @Override
             public void run() {
-                _textValue.setText(String.format("Disconnected"));
+                _reading.setText(reading);
+
+                Log.v(TAG, String.format("Heart Rate Reading: %s"
+                        , reading));
             }
         });
+    }
+
+    @Override
+    public void onDeviceDisconnect(Device device) {
+        setReading("Disconnected");
 
         Log.v(TAG, "Device disconnected");
         if (_inFocus) {

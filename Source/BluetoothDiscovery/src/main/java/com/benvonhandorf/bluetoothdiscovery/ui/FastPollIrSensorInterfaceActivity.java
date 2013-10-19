@@ -79,9 +79,11 @@ public class FastPollIrSensorInterfaceActivity extends Activity implements Devic
                     @Override
                     public void onValueChanged(Characteristic characteristic) {
                         final IrDataCharacteristic irDataCharacteristic = (IrDataCharacteristic) characteristic;
+
                         //Read again as soon as we've completed the previous read
-                        irDataCharacteristic.read();
                         displayTemperatureData(irDataCharacteristic);
+
+                        irDataCharacteristic.read();
                     }
                 });
 
@@ -93,11 +95,11 @@ public class FastPollIrSensorInterfaceActivity extends Activity implements Devic
         _uiThreadHandler.post(new Runnable() {
             @Override
             public void run() {
-                Log.v(TAG, String.format("IR Sensor Reading: %f %f"
+                Log.v(TAG, String.format("IR Sensor Reading: %.1f %.1f"
                         , irDataCharacteristic.getAmbientTemperature()
                         , irDataCharacteristic.getTargetTemperature()));
 
-                _reading.setText(String.format("Ambient: %f\nTarget: %f",
+                _reading.setText(String.format("Ambient: %.1f\nTarget: %.1f",
                         irDataCharacteristic.getAmbientTemperature(),
                         irDataCharacteristic.getTargetTemperature()));
             }

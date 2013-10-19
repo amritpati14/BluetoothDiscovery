@@ -156,7 +156,7 @@ public class IrSensorRawGattActivity extends Activity {
                     final double ambient = extractAmbientTemperature(characteristic);
                     final double target = extractTargetTemperature(characteristic, ambient);
 
-                    String reading = String.format("Ambient: %f\nTarget: %f",
+                    String reading = String.format("Ambient: %.1f\nTarget: %.1f",
                             ambient,
                             target);
 
