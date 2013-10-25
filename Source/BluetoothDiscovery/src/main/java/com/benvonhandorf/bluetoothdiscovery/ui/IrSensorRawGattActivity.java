@@ -17,9 +17,9 @@ import static java.lang.Math.*;
 import java.io.UnsupportedEncodingException;
 
 public class IrSensorRawGattActivity extends Activity {
+    private static final String TAG = IrSensorRawGattActivity.class.getSimpleName();
 
     private static final int REQUEST_ENABLE_BT = 55555;
-    private static final String TAG = IrSensorRawGattActivity.class.getSimpleName();
     private BluetoothAdapter _bluetoothAdapter;
     private BluetoothAdapter.LeScanCallback _leScanCallback;
     private BluetoothGattCallback _gattCallback;

@@ -55,12 +55,6 @@ public class IrSensorInterfaceActivity extends Activity implements Device.OnDevi
             Intent enableBtIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
             startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
         } else {
-//            _sensorTagDevice = new Device.Builder<SensorTagDevice>()
-//                            .withContext(this)
-//                            .withBluetoothAdapter(bluetoothAdapter)
-//                            .withDeviceReadyListener(this)
-//                            .build();
-
             _sensorTagDevice = new SensorTagDevice(this, bluetoothAdapter);
 
             _sensorTagDevice.setDeviceReadyListener(this);
